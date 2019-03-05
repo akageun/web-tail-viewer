@@ -4,19 +4,19 @@ const rf = require('readline');
 module.exports = class FileTailReader {
     constructor(sio, socket, socketUsers) {
 
-        this._init(sio, socket, socketUsers);
-        this.fileRead(sio, socket, socketUsers);
+        const logFilename = socketUsers[socket.id]['filenamePath']
+
+        this._init(sio, socket, socketUsers, logFilename);
+        this.fileRead(sio, socket, socketUsers, logFilename);
     }
 
-    async _init(sio, socket, socketUsers) {
-
-        const logFilename = socketUsers[socket.id]['filenamePath']
+    async _init(sio, socket, socketUsers, logFilename) {
 
         this._isValid(logFilename);
 
         const stat = fs.statSync(logFilename);
 
-        await this._preFileRead(sio, socket, socketUsers, stat);
+        await this._preFileRead(sio, socket, socketUsers, stat, logFilename);
 
         const lastSize = await this._getLastSizeTemp(stat);
         socketUsers[socket.id]['location'] = lastSize;
@@ -28,10 +28,8 @@ module.exports = class FileTailReader {
         }
     }
 
-    _preFileRead(sio, socket, socketUsers, stat) {
+    _preFileRead(sio, socket, socketUsers, stat, logFilename) {
         return new Promise((resolve, reject) => {
-
-            const logFilename = socketUsers[socket.id]['filenamePath'];
 
             let calculateStartSize = 0;
 
@@ -47,7 +45,6 @@ module.exports = class FileTailReader {
 
             if (socketUsers.indexOf(socket.id) === -1) {
 
-                //emit file data  line by line
                 rl.on('line', (line) => {
 
                     let lineData;
@@ -78,43 +75,26 @@ module.exports = class FileTailReader {
         }
     }
 
-    fileRead(sio, socket, socketUsers) {
-
-        /**
-         * [shouldWait boolean to handle the issue of node file descriptor twice event trigger]
-         * @type {Boolean}
-         */
-        let shouldWait = false;
-
-        /**
-         * [logFilename Name of the file to read]
-         * @type {[type]}
-         */
-        const logFilename = socketUsers[socket.id]['filenamePath'];
-
-        //This function will start watching file for any updates
+    fileRead(sio, socket, socketUsers, logFilename) {
         fs.watchFile(logFilename, {interval: 1000}, (event) => {
 
             const stat = fs.statSync(logFilename);
 
+            let oldSize = socketUsers[socket.id]['location'];
 
-            let oldsize = socketUsers[socket.id]['location'];
+            const fsReadStream = fs.createReadStream(logFilename, {start: oldSize, end: stat.size});
 
-            //get the file data from start and end position specified.
-            const fsread = fs.createReadStream(logFilename, {start: oldsize, end: stat.size});
-
-            const fileReadLine = rf.createInterface({
-                input: fsread,
+            const rl = rf.createInterface({
+                input: fsReadStream,
                 crlfDelay: Infinity
             });
 
-            fileReadLine.on('line', (line) => {
-
+            rl.on('line', (line) => {
                 sio.to(`${socket.id}`).emit('streamingdata', line);
             });
 
-            oldsize = stat.size;
-            socketUsers[socket.id]['location'] = oldsize;
+            oldSize = stat.size;
+            socketUsers[socket.id]['location'] = oldSize;
         });
 
     }
