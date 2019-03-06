@@ -1,11 +1,9 @@
-const express = require('express');
-const path = require('path');
-const http = require('http');
-const socket = require("socket.io");
-
-const fs = require('fs');
-
-const FileTailReader = require('./fileTailReader');
+import express from 'express';
+import path from 'path';
+import http from 'http';
+import socket from 'socket.io';
+import fs from 'fs';
+import FileTailReader from './fileTailReader';
 
 let app = express();
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,7 +23,6 @@ app.get('/tmp', (req, res) => {
 
 app.get('/directory', (req, res) => {
     const directory = req.query.directory;
-    console.log(directory);
 
     if (fs.existsSync(directory) === false) {
         throw new Error("File Does not exists");

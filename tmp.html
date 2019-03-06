@@ -66,14 +66,6 @@
         }
 
         .button.green {
-            background-color: #4CAF50; /* Green */
-        }
-
-        .button.red {
-            background-color: #f44336; /* Green */
-        }
-
-        .button.green {
             background-color: #4CAF50;
         }
 
@@ -135,6 +127,18 @@
             color: #666;
             cursor: pointer;
         }
+
+        ul {
+            /*list-style: none;*/
+            padding-left: 5px;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -142,14 +146,13 @@
     <h1 class="header">Web Tail Viewer</h1>
 
     <div class="searchBox">
-        <table>
+        <table style="width: 100%;">
             <tr>
                 <td>
                     <input type="text" value="Entered Directory">
                     <button class="button green">Get Data</button>
                 </td>
                 <td>
-
 
                 </td>
             </tr>
@@ -161,6 +164,7 @@
                         <option>Teachers</option>
                         <option>Head</option>
                     </select>
+                    <button class="button green">Reload</button>
                 </td>
                 <td>
 
@@ -169,16 +173,22 @@
             <tr>
                 <td>
                     <div class="formCheckBox">
-                        <input type="radio" name="demo" value="one" id="radio-one" class="formRadio" checked>
+                        <input type="radio" name="insertType" value="prepend" id="radio-one" class="formRadio" checked>
                         <label for="radio-one">Prepend</label>
                         &nbsp;&nbsp;
-                        <input type="radio" name="demo" value="one" id="radio-two" class="formRadio">
+                        <input type="radio" name="insertType" value="append" id="radio-two" class="formRadio">
                         <label for="radio-two">Append</label>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>
+                    Tail Start Time : 2019/01/01 23:59:59
+                </td>
+                <td align="right">
+                    Font-Size
+                    <button class="button red" onclick="fontSize('down'); return false;">-</button>
+                    <button class="button blue" onclick="fontSize('up'); return false;">+</button>
                 </td>
             </tr>
         </table>
@@ -186,13 +196,62 @@
     </div>
 
     <div class="logs">
-        <div style="height: 3000px;display: block;"></div>
+        <ul id="logId"></ul>
     </div>
 
 </div>
 
 <script>
+    window.onload = function () {
+        let el = document.getElementById('logId');
 
+        let insertType = document.querySelector('input[name="insertType"]:checked').value;
+        for (let i = 0; i < 150; i++) {
+            let logText = 'Content ' + i;
+            insertLog(el, insertType, logText);
+        }
+    };
+
+    function insertLog(el, insertType, logText) {
+        let elChild = document.createElement('li');
+        elChild.innerHTML = logText;
+
+        if (insertType === 'append') {
+            el.appendChild(elChild);
+
+        } else { //prepend
+            el.insertBefore(elChild, el.firstChild);
+
+        }
+    }
+
+    function fontSize(type) {
+        let el = document.getElementById('logId');
+        let style = window.getComputedStyle(el, null).getPropertyValue('font-size');
+        let fontSize = parseFloat(style);
+
+        if (type === 'down') {
+            if (fontSize === 10) {
+                alert('Min font-size 10!');
+                return;
+            }
+
+            fontSize -= 1
+
+        } else if (type === 'up') {
+            if (fontSize >= 18) {
+                alert('Max font-size 18!');
+                return;
+            }
+
+            fontSize += 1
+        } else {
+            alert("not support!!");
+            return;
+        }
+
+        el.style.fontSize = fontSize + 'px';
+    }
 </script>
 </body>
 </html>
