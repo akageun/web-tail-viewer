@@ -19,6 +19,9 @@ const server = http.createServer(app);
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html', {title: 'Express'});
 });
+app.get('/tmp', (req, res) => {
+    res.sendFile(__dirname + '/tmp.html');
+});
 
 app.get('/directory', (req, res) => {
     const directory = req.query.directory;

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Tail Viewer</title>
+    <style>
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+        }
+
+        #wrapper {
+            padding: 10px 10px 0px 10px;
+            height: 100%;
+        }
+
+        .header {
+            margin: 0;
+            height: 40px;
+        }
+
+        .searchBox {
+            height: 150px;
+        }
+
+        .logs {
+            height: calc(100% - 10px - 40px - 150px);
+            background-color: #dcdcdc;
+            overflow-y: scroll;
+        }
+
+        input, select {
+            width: 300px;
+            border: 1px solid #000;
+            padding: 0;
+            margin: 0;
+            height: 30px;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        input {
+            text-indent: 3px;
+        }
+
+        .button {
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            /*margin: 4px 2px;*/
+            cursor: pointer;
+
+            padding: 7px 10px;
+        }
+
+        .button.green {
+            background-color: #4CAF50; /* Green */
+        }
+
+        .button.red {
+            background-color: #f44336; /* Green */
+        }
+
+        .button.green {
+            background-color: #4CAF50;
+        }
+
+        .button.blue {
+            background-color: #008CBA;
+        }
+
+        .button.red {
+            background-color: #f44336;
+        }
+
+        .button.gray {
+            background-color: #e7e7e7;
+            color: black;
+        }
+
+        .button.black {
+            background-color: #555555;
+        }
+
+
+        .formRadio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            position: relative;
+            background-color: #4CAF50;
+            color: #666;
+            top: 6px;
+            height: 30px;
+            width: 30px;
+            border: 0;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-right: 3px;
+            outline: none;
+        }
+
+        .formRadio:checked::before {
+            position: absolute;
+            font: 14px/1 'Open Sans', sans-serif;
+            left: 9px;
+            top: 7px;
+            content: '\02143';
+            transform: rotate(40deg);
+        }
+
+        .formRadio:hover {
+            background-color: #93af7d;
+        }
+
+        .formRadio:checked {
+            background-color: #4CAF50;
+        }
+
+        .formCheckBox label {
+            font: 500 16px/1.7 'Open Sans', sans-serif;
+            color: #666;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <h1 class="header">Web Tail Viewer</h1>
+
+    <div class="searchBox">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" value="Entered Directory">
+                    <button class="button green">Get Data</button>
+                </td>
+                <td>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select>
+                        <option>Select Choice</option>
+                        <option>Student</option>
+                        <option>Teachers</option>
+                        <option>Head</option>
+                    </select>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="formCheckBox">
+                        <input type="radio" name="demo" value="one" id="radio-one" class="formRadio" checked>
+                        <label for="radio-one">Prepend</label>
+                        &nbsp;&nbsp;
+                        <input type="radio" name="demo" value="one" id="radio-two" class="formRadio">
+                        <label for="radio-two">Append</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="logs">
+        <div style="height: 3000px;display: block;"></div>
+    </div>
+
+</div>
+
+<script>
+
+</script>
+</body>
+</html>
