@@ -1,10 +1,10 @@
-const fs = require('fs');
-const rf = require('readline');
+import fs from 'fs';
+import rf from 'readline';
 
 module.exports = class FileTailReader {
     constructor(sio, socket, socketUsers) {
 
-        const logFilename = socketUsers[socket.id]['filenamePath']
+        const logFilename = socketUsers[socket.id]['filenamePath'];
 
         this._init(sio, socket, socketUsers, logFilename);
         this.fileRead(sio, socket, socketUsers, logFilename);
@@ -76,6 +76,7 @@ module.exports = class FileTailReader {
     }
 
     fileRead(sio, socket, socketUsers, logFilename) {
+        //TODO : add interval option
         fs.watchFile(logFilename, {interval: 1000}, (event) => {
 
             const stat = fs.statSync(logFilename);

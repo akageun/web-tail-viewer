@@ -6,7 +6,7 @@ import fs from 'fs';
 import FileTailReader from './fileTailReader';
 
 let app = express();
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -17,23 +17,43 @@ const server = http.createServer(app);
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html', {title: 'Express'});
 });
-app.get('/tmp', (req, res) => {
-    res.sendFile(__dirname + '/tmp.html');
+
+app.get('/axios', (req, res) => {
+    res.sendFile(path.join(__dirname, 'node_modules', 'axios', 'dist', 'axios.js'), {title: 'Express'});
 });
 
 app.get('/directory', (req, res) => {
-    const directory = req.query.directory;
-
-    if (fs.existsSync(directory) === false) {
-        throw new Error("File Does not exists");
+    const directory = req.query.dir;
+    if (directory === undefined || directory === "") {
+        res.status(400);
+        return res.json(
+            {
+                result: false,
+                msg: 'Required Directory!!'
+            }
+        );
     }
 
     const dirStat = fs.statSync(directory);
     if (dirStat.isDirectory() === false) {
-        console.log("test");
+        res.status(400);
+        return res.json(
+            {
+                result: false,
+                msg: 'Not Valid Directory!!'
+            }
+        );
     }
 
-    return res.json({"test": "testse"});
+    const readFileList = fs.readdirSync(directory);
+
+    return res.json(
+        {
+            result: true,
+            msg: 'SUCCESS',
+            data: readFileList
+        }
+    );
 });
 
 server.listen(port, () => {
@@ -62,16 +82,16 @@ let socketUsers = [];
 sio.on('connection', (socket) => {
     console.log("Connection established with socket id : " + socket.id);
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', () => {
         console.log('user disconnected of id ' + socket.id);
     });
 
-    socket.on('viewlogs', function (data) {
+    socket.on('viewlogs', (data) => {
 
         socketUsers[socket.id] = [];
-        socketUsers[socket.id]['filenamePath'] = data.filename;
+        socketUsers[socket.id]['filenamePath'] = path.join(data.directory, data.filename);
 
-        let ft = new FileTailReader(sio, socket, socketUsers);
+        new FileTailReader(sio, socket, socketUsers);
 
     });
 

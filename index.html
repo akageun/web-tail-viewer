@@ -1,85 +1,72 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/common.css"/>
 
-    <title>Hello, world!</title>
+    <title>Web Tail Viewer</title>
 </head>
 <body>
-<div class="container-fluid">
-    <h1>Hello, world!</h1>
 
-    <div class="row">
-        <div class="col mb-4">
-            <div class="form-inline">
-                <input class="form-control form-control-sm" type="text" name="filename" id="filename"
-                       value=""
-                       size="50" placeholder="Enter absolute path of file.">
-                <button class="btn btn-info btn-sm">Get File List</button>
-            </div>
-            <br>
-            <div class="form-inline">
-                <select class="form-control form-control-sm">
-                    <option>TEST</option>
-                    <option>TEST</option>
-                    <option>TEST</option>
-                    <option>TEST</option>
-                    <option>TEST</option>
-                </select>
-                <button class="btn btn-info btn-sm" onclick="viewlogs()">View Logs</button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col" style="padding-left: 10px; padding-right: 10px; height: 650px; overflow-y: scroll;">
-            <ui id="logs" style="">
+<div id="wrapper">
+    <h1 class="header">Web Tail Viewer</h1>
 
-            </ui>
-        </div>
+    <div class="searchBox">
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <input type="text" id="directory" name="directory" placeholder="Entered Directory"
+                           value="">
+                    <button class="button green" onclick="getFileList();">Get Data</button>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="targetDir" name="targetFilename"></select>
+                    <button class="button green" onclick="view();">View</button>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="formCheckBox">
+                        <input type="radio" name="insertType" value="prepend" id="radio-one" class="formRadio" checked>
+                        <label for="radio-one">Prepend</label>
+                        &nbsp;&nbsp;
+                        <input type="radio" name="insertType" value="append" id="radio-two" class="formRadio">
+                        <label for="radio-two">Append</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!--Tail Start Time : 2019/01/01 23:59:59-->
+                </td>
+                <td align="right">
+                    Font-Size
+                    <button class="button red" onclick="fontSize('down'); return false;">-</button>
+                    <button class="button blue" onclick="fontSize('up'); return false;">+</button>
+                </td>
+            </tr>
+        </table>
+
     </div>
+
+    <div class="logs">
+        <ol id="logId"></ol>
+    </div>
+
 </div>
 
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-
-<script>
-    $(document).ready(function () {
-    });
-
-    var cio = io();
-
-    cio.on('disconnect', function () {
-        cio.disconnect();
-    });
-
-    cio.on('streamingdata', function (msg) {
-        $('#logs').prepend($('<li>').text(msg));
-    });
-
-    function viewlogs() {
-        const filename = $("#filename").val() || "";
-        if (filename === "" || filename === undefined || filename === null) {
-            alert("Enter proper Filename");
-            return;
-        }
-        $('#logs').empty();
-
-        cio.emit('viewlogs', {'filename': filename});
-    }
-
-</script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/axios"></script>
+<script src="/static/js/common.js"></script>
 </body>
 </html>

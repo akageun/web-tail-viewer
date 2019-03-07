@@ -1,0 +1,7 @@
+[Mon Jul 24 00:15:48.045649 2017] [mcm_prefork:notice] [pid 1515] AH00163: Apache/2.4.18 (Ubuntu) configured -- resuming normal operations
+[Mon Jul 24 00:15:48.045786 2017] [core:notice] [pid 1515] AH00094: Command line: ‘/usr/sbin/apache2’
+[Mon Jul 24 13:29:42.215648 2017] [mcm_prefork:notice] [pid 1515] AH00169: caught SIGTERM, shutting down
+[Mon Jul 24 13:30:12.192837 2017] [mcm_prefork:notice] [pid 19036] AH00163: Apache/2.4.18 (Ubuntu) configured -- resuming normal operations
+[Mon Jul 24 13:30:48.847563 2017] [core:notice] [pid 19036] AH00094: Command line: ‘/usr/sbin/apache2’
+[Mon Jul 25 06:12:14.758473 2017] [mcm_prefork:notice] [pid 19036] AH00171: Graceful restart requested, doing restart
+AH00558: apache2: Could not reliably determine the server’s fully qualified domain name, using 127.0.1.1. Set the ‘ServerName’ directive globally to suppress this message
