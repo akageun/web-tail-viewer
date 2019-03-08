@@ -19,5 +19,16 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "nodemon": "^1.18.10"
-  }
+  },
+  "keywords": [
+    "tail",
+    "websocket",
+    "express",
+    "web"
+  ],
+  "homepage": "https://github.com/akageun/web-tail-viewer",
+  "repository": "git@github.com:akageun/web-tail-viewer.git",
+  "author": [
+    "akageun"
+  ]
 }
