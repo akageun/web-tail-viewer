@@ -2,7 +2,8 @@
   "name": "web-tail-viewer",
   "version": "0.0.1",
   "description": "log file viewer on web application",
-  "main": "app.js",
+  "main": "index.js",
+  "private": true,
   "dependencies": {
     "express": "^4.16.3",
     "socket.io": "^2.1.1"

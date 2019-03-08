@@ -4,6 +4,7 @@ import http from 'http';
 import socket from 'socket.io';
 import fs from 'fs';
 import FileTailReader from './fileTailReader';
+import {normalizePort, ResJson} from './commonModule';
 
 let app = express();
 app.use('/static', express.static(path.join(__dirname, 'public')));
@@ -11,70 +12,40 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-
 const server = http.createServer(app);
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html', {title: 'Express'});
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/axios', (req, res) => {
-    res.sendFile(path.join(__dirname, 'node_modules', 'axios', 'dist', 'axios.js'), {title: 'Express'});
+    res.sendFile(path.join(__dirname, 'node_modules', 'axios', 'dist', 'axios.js'));
 });
 
 app.get('/directory', (req, res) => {
     const directory = req.query.dir;
     if (directory === undefined || directory === "") {
         res.status(400);
-        return res.json(
-            {
-                result: false,
-                msg: 'Required Directory!!'
-            }
-        );
+
+        return res.json(new ResJson(false, 'Required Directory!!'));
     }
 
     const dirStat = fs.statSync(directory);
     if (dirStat.isDirectory() === false) {
         res.status(400);
-        return res.json(
-            {
-                result: false,
-                msg: 'Not Valid Directory!!'
-            }
-        );
+
+        return res.json(new ResJson(false, 'Not Valid Directory!!'));
     }
 
     const readFileList = fs.readdirSync(directory);
 
-    return res.json(
-        {
-            result: true,
-            msg: 'SUCCESS',
-            data: readFileList
-        }
-    );
+    return res.json(new ResJson(true, 'SUCCESS', readFileList));
 });
 
 server.listen(port, () => {
     console.log(`File monitor app intialized on port ${port} `);
 });
 
-function normalizePort(val) {
-    const port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
-
-    return false;
-}
 
 const sio = socket(server);
 let socketUsers = [];
