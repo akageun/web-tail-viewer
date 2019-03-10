@@ -42,7 +42,7 @@ function getFileList() {
         return;
     }
 
-    axios.get('/directory?dir=' + directory).then(function (res) {
+    axios.get('/directory', {params: {dir: directory}}).then(function (res) {
 
         if (res.status !== 200 || res.data.result === false) {
             alert(res.data.msg);

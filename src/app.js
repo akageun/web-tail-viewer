@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/axios', (req, res) => {
-    res.sendFile(path.join(__dirname, 'node_modules', 'axios', 'dist', 'axios.js'));
+    res.sendFile(path.join(__dirname, '..', 'node_modules', 'axios', 'dist', 'axios.js'));
 });
 
 app.get('/directory', (req, res) => {
