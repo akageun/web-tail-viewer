@@ -9,7 +9,6 @@
     <title>Web Tail Viewer</title>
 </head>
 <body>
-
 <div id="wrapper">
     <h1 class="header">Web Tail Viewer</h1>
 
@@ -50,9 +49,16 @@
                     <!--Tail Start Time : 2019/01/01 23:59:59-->
                 </td>
                 <td align="right">
-                    Font-Size
-                    <button class="button red" onclick="fontSize('down'); return false;">-</button>
-                    <button class="button blue" onclick="fontSize('up'); return false;">+</button>
+                    <span>
+                        <label>Font-Size</label>
+                        <button class="button red" onclick="fontSize('down'); return false;">-</button>
+                        <button class="button blue" onclick="fontSize('up'); return false;">+</button>
+                    </span>
+                    <span>
+                        <button class="button red" onclick="logAreaClear(); return false;">
+                            CLEAR
+                        </button>
+                    </span>
                 </td>
             </tr>
         </table>
@@ -64,6 +70,23 @@
     </div>
 
 </div>
+
+<!-- Start : layer-popup content -->
+<div id="layer" class="layer-wrap">
+    <div class="pop-layer">
+        <div class="pop-container">
+            <div class="pop-conts">
+                <div id="content"></div>
+
+                <div class="btn-layer">
+                    <a class="btn-layerClose">Close</a>
+                </div>
+                <!--// content-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End : layer-popup content -->
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/axios"></script>

@@ -23,6 +23,12 @@ function initWs() {
 function insertLog(el, insertType, logText) {
     let elChild = document.createElement('li');
     elChild.innerHTML = logText;
+    elChild.onclick = function () {
+        openLayerPopup(elChild.innerHTML);
+
+    };
+
+    elChild.style.cursor = 'pointer';
 
 
     if (insertType === 'append') {
@@ -98,4 +104,19 @@ function fontSize(type) {
     }
 
     el.style.fontSize = fontSize + 'px';
+}
+
+function logAreaClear() {
+    let el = document.getElementById('logId');
+    el.innerHTML = '';
+}
+
+function openLayerPopup(bodyText) {
+
+    document.querySelector('#layer #content').innerHTML = bodyText;
+    document.getElementById('layer').style.display = 'block';
+
+    document.querySelector('.btn-layerClose').addEventListener('click', function () {
+        document.getElementById('layer').style.display = 'none';
+    });
 }
