@@ -14,7 +14,7 @@ function initWs() {
         cio.disconnect();
     });
 
-    cio.on('streamingdata', function (msg) {
+    cio.on('log-view-data', function (msg) {
         let el = document.getElementById('logId');
         insertLog(el, insertType, msg);
     });

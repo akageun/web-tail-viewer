@@ -91,7 +91,7 @@ module.exports = class FileTailReader {
             });
 
             rl.on('line', (line) => {
-                sio.to(`${socket.id}`).emit('streamingdata', line);
+                sio.to(`${socket.id}`).emit('log-view-data', line);
             });
 
             oldSize = stat.size;
